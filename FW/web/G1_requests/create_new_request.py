@@ -6,13 +6,14 @@ import time
 
 class CreateNewRequest(AnyPage):
     def create_new_request_with_sample(self):
+        time.sleep(1)
         self.get_driver().find_element(By.XPATH, '//*[@anchor="Requests"]').click()
         time.sleep(2)
         if self.check_new_design():
             self.get_driver().find_element(By.XPATH, '//*[@class="header__button"]').click()
         else:
             self.get_driver().find_element(By.XPATH, '//div[@id="vue_common_placeholder"]//a').click()
-            time.sleep(1)
+            time.sleep(2)
             self.get_driver().find_element(By.XPATH, '//*[@class="header__button"]').click()
         self.get_driver().find_element(By.XPATH, '//*[@id="option-new"]').click()
         self.get_driver().find_element(By.XPATH, '//*[@id="Department_chosen"]').click()
