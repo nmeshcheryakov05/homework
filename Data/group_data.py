@@ -7,6 +7,12 @@ class GroupData:
     token_type = ''
     refresh_token = ''
 
+    buttons_web = {
+        'toWork': '//*[@class="ga_change_status"]/button',
+        'assignToSelf': '//*[@class="ga_change_status"]/button',
+        'toExamination': '//*[@id="to_resolved"]'
+    }
+
     users_id_api = {
         'user1': {
             'id': '8166'

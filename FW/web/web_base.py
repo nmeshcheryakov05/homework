@@ -1,3 +1,5 @@
+from selenium.webdriver import ActionChains
+
 from FW.FW_base import FWBase
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -36,3 +38,9 @@ class WebBase(FWBase):
             return WebDriverWait(self.get_driver(), wait).until(EC.presence_of_all_elements_located(locator))
         except:
             pass
+
+    def move_to_element(self, locator):
+        actions = ActionChains(self.get_driver())
+        element = self.find_element(locator)
+        actions.move_to_element(element)
+        actions.perform()

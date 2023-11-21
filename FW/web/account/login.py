@@ -41,3 +41,10 @@ class Login(AnyPage):
     def logout(self):
         self.click_element((By.XPATH, '//*[@data-anchor="profile"]'))
         self.click_element((By.XPATH, '//*[@data-anchor="exit_user"]'))
+
+    def check_login(self):
+        try:
+            self.find_element((By.XPATH, '//*[@data-anchor="profile"]'))
+            return True
+        except:
+            return False
