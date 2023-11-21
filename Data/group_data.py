@@ -7,6 +7,21 @@ class GroupData:
     token_type = ''
     refresh_token = ''
 
+    users_id_api = {
+        'user1': {
+            'id': '8166'
+        },
+        'user3': {
+            'id': '8168'
+        },
+        'boss1': {
+            'id': '179904'
+        },
+        'boss2': {
+            'id': '179903'
+        }
+    }
+
     users_id = {
         'boss1': {
             'id': 'ap_179904'

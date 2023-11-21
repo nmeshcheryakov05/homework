@@ -3,6 +3,10 @@ from FW.web.any_page import AnyPage
 
 
 class EditRequest(AnyPage):
+
+    def page_loading(self):
+        self.find_element((By.XPATH, '//*[@id="Description"]'))
+
     def get_request_number(self):
         return self.find_element((By.XPATH, '//*[@id="is11"]/div[1]/div[1]/b')).text[2:]
 

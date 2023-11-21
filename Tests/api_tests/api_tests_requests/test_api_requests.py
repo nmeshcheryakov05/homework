@@ -1,49 +1,139 @@
-import allure
-
 from Tests.test_base import TestBase
 import pytest
 
 
-@allure.feature('Api')
-@allure.story('Request')
 class TestApiRequests(TestBase):
-    testdata = (
-        ('user2', 'text', 'testuser02'),
-        ('user1', '123123', 'testuser01'),
-        ('user3', '', 'testuser03'),
-    )
 
-    @allure.title('Получение заявки по Id')
-    def test_requests_1(self):
-        request = self.APP.api_requests.get_requests_id(1524420)
-
-        assert 'API Test request 11.10.2023 15:08' == request['Description']
-        assert len(request['Approvers']) > 2
-
-    @allure.title('Создание заявки')
-    @allure.severity(allure.severity_level.CRITICAL)
-    @allure.description('description description description')
-    @pytest.mark.CRITICAL
-    @pytest.mark.ApiTest
-    @pytest.mark.parametrize("user,text,expected", testdata)
-    def test_requests_2(self, user, text, expected):
-
-        login = self.APP.group_data.users[user]['log']
-        password = self.APP.group_data.users[user]['pass']
-
-        description = f"API Test request {self.APP.time.get_date_time_for_sql_increased_x_days()} -- {text}"
-
+    def test_request_assign_cancel(self):
+        login = self.APP.group_data.users['user1']['log']
+        password = self.APP.group_data.users['user1']['pass']
+        description = f"API Test request {self.APP.time.get_date_time_for_sql_increased_x_days()}"
         self.APP.api_token.get_token(login, password)
-
         body = {
-            "department": {"id": 3},
-            "category": {"id": 6},
-            "requestType": {"id": 6},
-            "jobType": {"id": 3906},
-            "description": description,
+            "Department": {"id": 38},
+            "Category": {"id": 489},
+            "RequestType": {"id": 2552},
+            "JobType": {"id": 13728},
+            "Description": description,
+            "Approvers": [
+                {"id": 179904},
+                {"id": 179903}
+            ]
         }
         response = self.APP.api_requests.post_requests(body)
+        requestid = response['Id']
+        lastmodifieddate = response['LastModifiedDate']
+        login = self.APP.group_data.users['boss1']['log']
+        password = self.APP.group_data.users['boss1']['pass']
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 2
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+        lastmodifieddate = response['LastModifiedDate']
+        login = self.APP.group_data.users['boss2']['log']
+        password = self.APP.group_data.users['boss2']['pass']
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 3
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+        #firstapproverstatus = response['userStatus']
+        #secondapproverstatus = response['userStatus']
 
+        #assert firstapproverstatus ==
+        #assert secondapproverstatus ==
+        assert response['Status'] == 5
+        print()
+
+    def test_request_cancel_assign(self):
+        login = self.APP.group_data.users['user1']['log']
+        password = self.APP.group_data.users['user1']['pass']
+        description = f"API Test request {self.APP.time.get_date_time_for_sql_increased_x_days()}"
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "Department": {"id": 38},
+            "Category": {"id": 489},
+            "RequestType": {"id": 2552},
+            "JobType": {"id": 13728},
+            "Description": description,
+            "Approvers": [
+                {"id": 179904},
+                {"id": 179903}
+            ]
+        }
+        response = self.APP.api_requests.post_requests(body)
+        requestid = response['Id']
+        lastmodifieddate = response['LastModifiedDate']
+        login = self.APP.group_data.users['boss1']['log']
+        password = self.APP.group_data.users['boss1']['pass']
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 3
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+        lastmodifieddate = response['LastModifiedDate']
+        login = self.APP.group_data.users['boss2']['log']
+        password = self.APP.group_data.users['boss2']['pass']
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 2
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+        # firstapproverstatus = response['userStatus']
+        # secondapproverstatus = response['userStatus']
+
+        # assert firstapproverstatus ==
+        # assert secondapproverstatus ==
         assert response['Status'] == 6
-        assert response['Description'] == description
-        assert response['Initiator']['Login'] == expected
+
+    def test_user_rates_user(self):
+        login = self.APP.group_data.users['user1']['log']
+        password = self.APP.group_data.users['user1']['pass']
+        description = f"API Test request {self.APP.time.get_date_time_for_sql_increased_x_days()}"
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "Department": {"id": 38},
+            "Category": {"id": 489},
+            "RequestType": {"id": 2552},
+            "JobType": {"id": 13728},
+            "Description": description,
+            "Approvers": [
+                {"id": 179904},
+                {"id": 179903}
+            ]
+        }
+        response = self.APP.api_requests.post_requests(body)
+        requestid = response['Id']
+        lastmodifieddate = response['LastModifiedDate']
+        login = self.APP.group_data.users['user3']['log']
+        password = self.APP.group_data.users['user3']['pass']
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 9
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+        lastmodifieddate = response['LastModifiedDate']
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 5
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+        lastmodifieddate = response['LastModifiedDate']
+        login = self.APP.group_data.users['user1']['log']
+        password = self.APP.group_data.users['user1']['pass']
+        self.APP.api_token.get_token(login, password)
+        body = {
+            "lastModifiedDate": lastmodifieddate,
+            "bidAction": 7,
+            "rating": 4
+        }
+        response = self.APP.api_requests.put_requests_id(body, requestid)
+
+        assert response['Status'] == 9
+        

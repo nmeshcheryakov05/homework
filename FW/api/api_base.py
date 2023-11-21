@@ -1,12 +1,14 @@
 import json
 from json.decoder import JSONDecodeError
-
 import requests
-
 from FW.FW_base import FWBase
 
 
 class ApiBase(FWBase):
+
+    def get_base_url(self):
+        api_base_url = self.manager.group_data.base_url
+        return api_base_url
 
     def get_header(self):
         headers = {}

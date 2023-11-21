@@ -1,21 +1,22 @@
 from Tests.pre_conditions import PreConditions
 import time
 
+
 class TestRequests(PreConditions):
 
     def test_request_assign_cancel(self):
         self.APP.any_page.open_main_page()
         self.APP.login.g1_login_log_pas()
         self.APP.any_page.go_to_requests()
-        self.APP.web_request.create_new_default_request()
-        self.APP.web_request.gandiva_test_department_choose()
-        self.APP.web_request.software_category_choose()
-        self.APP.web_request.test_type_choose()
-        self.APP.web_request.test_job_type_choose()
-        self.APP.web_request.test_description()
+        self.APP.request_list.create_new_default_request()
+        self.APP.create_request.gandiva_test_department_choose()
+        self.APP.create_request.software_category_choose()
+        self.APP.create_request.ms_gandiva_type_choose()
+        self.APP.create_request.test_type_one_job_type_choose()
+        self.APP.create_request.test_description()
         for result in range(2):
             result += 1
-            self.APP.web_request.add_coordinator('boss', result)
+            self.APP.create_request.add_coordinator('boss', result)
         self.APP.edit_request.save_request()
         request = self.APP.edit_request.get_request_number()
         self.APP.login.logout()
@@ -41,15 +42,15 @@ class TestRequests(PreConditions):
         self.APP.any_page.open_main_page()
         self.APP.login.g1_login_log_pas()
         self.APP.any_page.go_to_requests()
-        self.APP.web_request.create_new_default_request()
-        self.APP.web_request.gandiva_test_department_choose()
-        self.APP.web_request.software_category_choose()
-        self.APP.web_request.test_type_choose()
-        self.APP.web_request.test_job_type_choose()
-        self.APP.web_request.test_description()
+        self.APP.request_list.create_new_default_request()
+        self.APP.create_request.gandiva_test_department_choose()
+        self.APP.create_request.software_category_choose()
+        self.APP.create_request.test_type_choose()
+        self.APP.create_request.test_job_type_choose()
+        self.APP.create_request.test_description()
         for result in range(2):
             result += 1
-            self.APP.web_request.add_coordinator('boss', result)
+            self.APP.create_request.add_coordinator('boss', result)
         self.APP.edit_request.save_request()
         request = self.APP.edit_request.get_request_number()
         self.APP.login.logout()
@@ -75,16 +76,17 @@ class TestRequests(PreConditions):
         self.APP.any_page.open_main_page()
         self.APP.login.g1_login_log_pas()
         self.APP.any_page.go_to_requests()
-        self.APP.web_request.create_new_default_request()
-        self.APP.web_request.gandiva_test_department_choose()
-        self.APP.web_request.software_category_choose()
-        self.APP.web_request.test_type_choose()
-        self.APP.web_request.test_job_type_choose()
-        self.APP.web_request.test_description()
+        self.APP.request_list.create_new_default_request()
+        self.APP.create_request.gandiva_test_department_choose()
+        self.APP.create_request.software_category_choose()
+        self.APP.create_request.test_type_choose()
+        self.APP.create_request.test_job_type_choose()
+        self.APP.create_request.test_description()
         self.APP.edit_request.save_request()
         request = self.APP.edit_request.get_request_number()
         self.APP.login.logout()
-        self.APP.login.g1_login_log_pas(self.APP.group_data.users['user3']['log'], self.APP.group_data.users['user3']['pass'])
+        self.APP.login.g1_login_log_pas(self.APP.group_data.users['user3']['log'],
+                                        self.APP.group_data.users['user3']['pass'])
         self.APP.any_page.go_to_request_with_request_number(request)
         self.APP.edit_request.assign_request_to_yourself()
         self.APP.edit_request.save_request()
