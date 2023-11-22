@@ -1,10 +1,14 @@
-
+import allure
 import requests
 from FW.api.api_base import ApiBase
 
 
+@allure.epic('G1')
+@allure.feature('API')
+@allure.story('Работа с API Token')
 class Token(ApiBase):
 
+    @allure.step('Обертка для POST запроса на Token')
     def post_token(self, login=None, password=None, refresh_token=None):
         url = self.get_base_url() + '/api/Token'
 
@@ -25,6 +29,7 @@ class Token(ApiBase):
 
         return response.json()
 
+    @allure.step('GET запрос на получение Token')
     def get_token(self, login=None, password=None, refresh_token=None):
 
         if login is None:

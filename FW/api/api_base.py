@@ -2,14 +2,20 @@ import json
 from json.decoder import JSONDecodeError
 import requests
 from FW.FW_base import FWBase
+import allure
 
 
+@allure.epic('G1')
+@allure.feature('API')
+@allure.story('API base методы')
 class ApiBase(FWBase):
 
+    @allure.step('GET запрос на получение базового URL')
     def get_base_url(self):
         api_base_url = self.manager.group_data.base_url
         return api_base_url
 
+    @allure.step('GET запрос на получение заголовков')
     def get_header(self):
         headers = {}
 
@@ -22,6 +28,7 @@ class ApiBase(FWBase):
         headers['Content-Type'] = 'application/json'
         return headers
 
+    @allure.step('Обертка для GET запроса')
     def requests_GET(self, URL, params=None):
         headers = self.get_header()
 
@@ -35,6 +42,7 @@ class ApiBase(FWBase):
         except JSONDecodeError:
             return response
 
+    @allure.step('Обертка для POST запроса')
     def requests_POST(self, URL, body, params=None):
         headers = self.get_header()
 
@@ -49,6 +57,7 @@ class ApiBase(FWBase):
         except JSONDecodeError:
             return response
 
+    @allure.step('Обертка для PUT запроса')
     def requests_PUT(self, URL, body, params=None):
         headers = self.get_header()
 
@@ -62,6 +71,7 @@ class ApiBase(FWBase):
         except JSONDecodeError:
             return response
 
+    @allure.step('Обертка для DELETE запроса')
     def requests_DELETE(self, URL, body=None, params=None):
         headers = self.get_header()
 
